@@ -48,6 +48,7 @@
 									<option value="Estetica">Estetica</option>
 									<option value="Parfum">Parfum</option>
 									<option value="Medicinal">Uz medicinal</option>
+									<option value="Fructifer">Plante fructifere</option>
 								</select>
 							</div>
 							<div class="form-group">

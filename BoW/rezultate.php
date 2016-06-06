@@ -1,24 +1,10 @@
 <?php
- /* Copyright (C) <2015>  <Pohrib Petre Mihail & Vasilie Florin Paul>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 	session_start();
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Pet4Web</title>
+	<title>BoW</title>
 	<script src="resources/js/afisarebutoane.js" type="text/javascript"></script>
 	<link rel="stylesheet" type="text/css" href="resources/css/main.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +20,7 @@
 			die("Serverul a intalnit o eroare: ".$e->getMessage());
 		}
 		try{
-			$rez=$db->execFetchAll("select id_petitie,titlu,username,data_postarii from petitii where upper(titlu) LIKE upper('%".$_REQUEST['search']."%')");
+			$rez=$db->execFetchAll("select id_planta,denumire,username,data_postarii from plante where upper(denumire) LIKE upper('%".$_REQUEST['search']."%')");
 		}catch(Exception $e){
 			die("Serverul a intalnit o eroare: ".$e->getMessage());
 		}
@@ -43,13 +29,13 @@
 
 			echo "<table>
 				<tr>
-				<th>Titlu</th>
+				<th>Denumire</th>
 				<th>Utilizator</th>
 				<th>Data postarii</th>
 				</tr>";
 			foreach ($rez as $r) {
 				echo "<tr>";
-				echo "<td><a href=\"details.php?id=".$r['ID_PETITIE']."\">" . $r['TITLU']."</a></td>";
+				echo "<td><a href=\"details.php?id=".$r['ID_PLANTA']."\">" . $r['DENUMIRE']."</a></td>";
 			    echo "<td>" . $r['USERNAME'] . "</td>";
 			    echo "<td>" . $r['DATA_POSTARII'] . "</td>";
 			    echo "</tr>";
