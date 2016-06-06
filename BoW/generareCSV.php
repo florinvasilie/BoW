@@ -15,66 +15,24 @@
 			die("Eroare server: ".$e->getMessage());
 		}
 		try{
-			$rez=$db->execFetchAll("select titlu,vizualizari as maxim from petitii where vizualizari=(select max(vizualizari) from petitii)");
+			$rez=$db->execFetchAll("select * from plante");
 		}catch(Exception $e){
 			die("Eroare server: ".$e->getMessage());
 		}
-		$csv="titlu,max(vizualizari)\n";
+		$csv="id_planta,categorie,beneficii,data_postarii,username,vizualizari,denumire,origine,regim_dezv,descriere,imagine\n";
 		foreach($rez as $r){
-					$csv.=$r['TITLU']."," . $r['MAXIM']. "\n";
+					$csv.=$r['ID_PLANTA'] . $r['CATEGORIE']."," .$r['BENEFICII']."," .$r['DATA_POSTARII']."," .$r['USERNAME']."," .$r['VIZUALIZARI']."," .$r['DENUMIRE']."," .$r['ORIGINE']."," .$r['REGIM_DEZV']."," .$r['DESCRIERE']."," .$r['IMAGINE']."\n";
 		}
 		
-		try{
-			$rez=$db->execFetchAll("SELECT * FROM (SELECT titlu,data_postarii FROM petitii ORDER BY data_postarii DESC) WHERE ROWNUM<=1");
-		}catch(Exception $e){
-			die("Eroare server: ".$e->getMessage());
-		}
-		$csv.="titlu,data_pastarii\n";
 		
-		foreach($rez as $r){
-					$csv.=$r['TITLU']."," .$r['DATA_POSTARII']."\n";
-		}
-		
-		$csv.="titlu,username\n";
-		try{
-			$rez=$db->execFetchAll("SELECT P.TITLU,P.USERNAME,COUNT(S.ID_PETITIE),S.ID_PETITIE FROM SEMNATURI S JOIN PETITII P ON
-									s.id_petitie=p.id_petitie group by p.username,p.titlu,s.id_petitie 
-									having count(s.id_petitie)=(select max(count(id_petitie)) from semnaturi group by id_petitie)");
-		}catch(Exception $e){
-			die("Eroare server: ".$e->getMessage());
-		}
-		foreach($rez as $r){
-					$csv.=$r['TITLU']."," .$r['USERNAME']."\n";
-		}
-		$csv.="username\n";
-		try{
-			$rez=$db->execFetchAll("SELECT USERNAME,COUNT(username) FROM PETITII GROUP BY USERNAME
-								HAVING COUNT(username)=(SELECT MAX(COUNT(username)) FROM petitii GROUP BY USERNAME)");
-		}catch(Exception $e){
-			die("Eroare server: ".$e->getMessage());
-		}
-		foreach($rez as $r){
-					$csv.=$r['USERNAME']."\n";
-		}
-		$csv.="username\n";
-		try{
-			$rez=$db->execFetchAll("SELECT USERNAME,COUNT(USERNAME) FROM SEMNATURI GROUP BY USERNAME HAVING
-						COUNT(USERNAME)=(SELECT MAX(COUNT(USERNAME)) FROM SEMNATURI GROUP BY USERNAME)");
-		}catch(Exception $e){
-			die("Eroare server: ".$e->getMessage());
-		}
-		foreach($rez as $r){
-					$csv.=$r['USERNAME']."\n";
-		}
-
 		$file = 'RaportCSV.csv';
-		$dir='rapoarte';
+		$dir='Rapoarte';
 		if(!is_dir($dir))
 			mkdir($dir);
 		file_put_contents("$dir/$file", $csv);
 		echo "<div class=\"container\"><div class=\"main-content\">";
-		echo "<p>Raportul a fost generat cu succes</p>";
-		echo "<a href="."$dir"."/"."$file".">Deschide raportul!</a>";
+		echo "<p>Exportul $file a fost generat cu succes</p>";
+		echo "<a href="."$dir"."/"."$file".">Deschide fisierul!</a>";
 		echo "</div></div>";
 	?>
 		

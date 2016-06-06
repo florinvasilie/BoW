@@ -59,6 +59,7 @@
 	  echo "<tr>";
 	    echo "<th>DENUMIRE</th>";
 	    echo "<th>STERGERE</th>";
+	     echo "<th>EDITEAZA</th>";
 	   echo "</tr>";
 	
 	$offset=30*($Page-1)+1; $nrez=30+($Page-1)*30;
@@ -88,6 +89,7 @@
 		<tr>
 			<td><?=$r['DENUMIRE'];?></td>
 			<td><a href="apps/delplanta.php?id=<?=$r['ID_PLANTA']?>">Stergere</a> </td>
+			<td><a href="modificare_planta.php?id=<?=$r['ID_PLANTA']?>">Editeaza</a> </td>
 		</tr>
 		<?php
 	}

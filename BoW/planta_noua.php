@@ -36,7 +36,7 @@
 								<label for="category">Categorii plante</label>
 								<select name="categorii" placeholder="Categorii plante" id="category">
 									<option value="Mediteraneene">Plante mediteraneene</option>
-									<option value="Msiatice">Plante asiatice</option>
+									<option value="Asiatice">Plante asiatice</option>
 									<option value="Conifere">Conifere</option>
 									<option value="Foioase">Foioase</option>
 									<option value="Stepa">Plante de stepa</option>

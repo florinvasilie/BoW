@@ -89,6 +89,7 @@
 		<?php
 	}
 	?>
+	
 	<select onchange="mesajeAdmin(this.value)">
 			<?php
 				for($it=1; $it<=$Num_Pages; $it++)

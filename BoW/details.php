@@ -68,11 +68,12 @@
 					}
 					if($test){
 						echo "<p>Ati votat aceasta planta. Multumim! </p>";
+
 					}
 
 					else {
 						echo "<a class=\"btn-primary\" href=\"apps/voteazaplanta.php?id=".$id."\">Voteaza</a><br><br>";
-					}
+					}	
 				}
 				else{
 					session_destroy();
@@ -86,6 +87,16 @@
 		else{
 			echo "<h2>Logati-va pentru a putea vota</h2>";
 		}
+		$sql="select count(username) as nrvoturi from aprecieri where id_planta='".$id."'";
+		try{
+			$rez=$db->execFetchAll($sql);
+		}catch(Exception $e){
+			echo "<p>A aparut o eroare.</p>";
+		}
+		foreach($rez as $r){
+			echo "<h2>Aceasta planta a fost votata de ".$r['NRVOTURI']." ori!</h2>";
+		}
+
 	?>
 
 	<a href="https://twitter.com/share" class="twitter-share-button" data-size="large">Tweet</a>

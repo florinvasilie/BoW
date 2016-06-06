@@ -38,18 +38,21 @@
 					</div>
 					<nav class="primary-navigation">
 						<ul>
-							<li><a href="generareHTML.php">Generare raport HTML</a></li>
-							<li><a href="generarePDF.php">Generare raport PDF</a></li>
-							<li><a href="generareCSV.php">Generare raport CSV</a></li>
-							<li><a class="btn-primary" href="adminpage.php">Contul Meu</a></li>
+							<li><a href="generareXML.php">Generare XML</a></li>
+							<li><a href="generareCSV.php">Generare CSV</a></li>
 							<li><a class="btn-primary" href="logout.php">Logout</a></li>
 						</ul>
 					</nav>	
 			</header>
 		<?php
+
 			echo "<div class=\"main-content\">";
 			echo "<p>Aceasta este zona admin</p>";
 			echo "<div id=\"mesaje\"></div>";
+			echo "<br>";
+			echo "<a class=\"btn-primary\"href=\"apps/deletemsg.php\">Sterge Mesaje</a>";
+			echo "<br><br>";
+			echo "<a class=\"btn-primary\"href=\"utilizatori.php?Page=1\">Utilizatori</a>";
 			echo "</div>";
 		}
 		else{

@@ -37,23 +37,23 @@
 				
 					<div class="form-group">
 					<label for="username">Username</label>
-					<input id="username" name="username" type="text" placeholder="Username" value=<?=$r['USERNAME'] ?> readonly>
+					<input id="username" name="username" type="text" placeholder="Username" value="<?=$r['USERNAME'] ?>" readonly>
 					</div>
 					<div class="form-group">
 						<label for="username">Nume</label>
-						<input id="username" name="nume" type="text" placeholder="Nume" value=<?=$r['NUME'] ?> required>
+						<input id="username" name="nume" type="text" placeholder="Nume" value="<?=$r['NUME'] ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label>
-						<input id="email" name="email" type="email" placeholder="Email" value=<?=$r['EMAIL'] ?> readonly>
+						<input id="email" name="email" type="email" placeholder="Email" value="<?=$r['EMAIL'] ?>" readonly>
 					</div>
 					<div class="form-group">
 						<label for="date">Data Nasterii</label>
-						<input id="username" name="datan" type="date" placeholder="Data Nasterii" value=<?=$r['DATA_NASTERII'] ?> required>
+						<input id="username" name="datan" type="date" placeholder="Data Nasterii" value="<?=$r['DATA_NASTERII'] ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="password">Parola</label>
-						<input id="password" name="parola" type="password" placeholder="Parola" value=<?=$r['PASSWD'] ?> required>
+						<input id="password" name="parola" type="password" placeholder="Parola" value="<?=$r['PASSWD'] ?>" required>
 					</div>
 					<button class="btn-primary pull-right" name="buton" type="submit">
 					Trimite!</button>
