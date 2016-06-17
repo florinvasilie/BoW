@@ -19,7 +19,7 @@
 			<form action="apps/login.php" method="post">
 				<div class="form-group">
 					<label for="username">Username</label>
-					<input name="nume" type="text" placeholder="Username" id="username" required>
+					<input name="nume" type="text" placeholder="Username" id="username" pattern="[a-zA-Z0-9-]+" title="Doar litere si cifre!" required>
 				</div>
 				<div class="form-group">
 					<label for="password">Parola</label>

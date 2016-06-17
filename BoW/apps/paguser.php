@@ -10,7 +10,7 @@
 
 	<?php
 		require_once("database.php");
-		
+		require_once("paginare.php");
 		$Per_page=30;
 		
 		if(!$_GET['Page']){
@@ -34,36 +34,8 @@
 		if($Nr_linii==0){
 			die("Nu exista plante de afisat.");
 		}
-		$Prev_Page = $Page-1;
-		$Next_Page = $Page+1;
-		if($Nr_linii<=$Per_page)
-		{
-			$Num_Pages =1;
-		}
-		else if(($Nr_linii % $Per_page)==0)
-		{
-			$Num_Pages =($Nr_linii/$Per_page) ;
-		}
-		else
-		{
-			$Num_Pages =($Nr_linii/$Per_page)+1;
-			$Num_Pages = (int)$Num_Pages;
-		}
-		if($Page>$Num_Pages){
-			$Page=$Num_Pages;
-		}
-		if($Page<1){
-			$Page=1;
-		}
-	echo "<table>";
-	  echo "<tr>";
-	    echo "<th>DENUMIRE</th>";
-	    echo "<th>STERGERE</th>";
-	     echo "<th>EDITEAZA</th>";
-	   echo "</tr>";
-	
-	$offset=30*($Page-1)+1; $nrez=30+($Page-1)*30;
-	$sql= "SELECT f.*
+		$paginare= new Paginare();
+		$sql= "SELECT f.*
 			FROM (
 				SELECT t.*, rownum r
 				FROM (
@@ -73,17 +45,16 @@
 					ORDER BY ID_PLANTA) t
 				WHERE rownum <= :rezt) f
 			WHERE r >= :offs";
-	try{
-		$rez=$db->execFetchAll($sql,array(array(":offs",$offset,-1),array(":rezt",$nrez,-1)));
-	}catch(Exception $e){
-		die("<p>Serverul a intampinat o eroare: ".$e->getMessage()."</p>");
-	}
-	if ($Page==$Num_Pages){
-		if ($Num_Pages % $Per_page!=0){
-			$limit=$Nr_linii-($Num_Pages-1)*$Per_page;
-		}
-	}
-	else $limit=30;
+		$Num_Pages="OK";	
+		$rez=$paginare->rasfoieste($Page,30,$Nr_linii,$sql,$Num_Pages);
+	echo "<table>";
+	  echo "<tr>";
+	    echo "<th>DENUMIRE</th>";
+	    echo "<th>STERGERE</th>";
+	     echo "<th>EDITEAZA</th>";
+	   echo "</tr>";
+	
+
 	foreach($rez as $r){
 		?>
 		<tr>

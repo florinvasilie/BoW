@@ -8,24 +8,31 @@
 </head>
 <body>
 	<?php
-		require_once("database.php");
-		try{
-			$db= new Database();
-		}catch(Exception $e){
-			die("Eroare server: ".$e->getMessage());
-			header("refresh:5;url=\\BoW/index.php");
-		}
-		$sql="insert into plante(categorie,beneficii,data_postarii,username,vizualizari,denumire,origine,regim_dezv,descriere,imagine)". 
-		"values(:categorii,:beneficii,SYSDATE,:username,0,:denumire,:origine,:dezvoltare,:descriere,:imagine)";
+		require_once("input.php");
 
-		try{
-			$db->execute($sql,array(array(":categorii",$_REQUEST['categorii'],-1),array(":beneficii",htmlspecialchars($_REQUEST['beneficii']),-1),
-			array(":username",htmlspecialchars($_SESSION['username']),-1),array(":denumire",htmlspecialchars($_REQUEST['denumire']),-1),array(":origine",htmlspecialchars($_REQUEST['origine']),-1),array(":dezvoltare",htmlspecialchars($_REQUEST['dezvoltare']),-1),array(":descriere",htmlspecialchars($_REQUEST['descriere']),-1),array(":imagine",htmlspecialchars($_REQUEST['imagine']),-1)));
-		}catch(Exception $e){
-			die("Eroare server: ".$e->getMessage()."Incercati mai tarziu!");
-			header("refresh:5;url=\\BoW/index.php");
+		$categorii=htmlspecialchars($_REQUEST['categorii']);
+		$beneficii=htmlspecialchars($_REQUEST['beneficii']);
+		$username=htmlspecialchars($_SESSION['username']);
+		$denumire=htmlspecialchars($_REQUEST['denumire']);
+		$origine=htmlspecialchars($_REQUEST['orgine']);
+		$dezvoltare=htmlspecialchars($_REQUEST['dezvoltare']);
+		$descriere=htmlspecialchars($_REQUEST['descriere']);
+		$spatiu=htmlspecialchars($_REQUEST['spatiu']); //todo
+		$perioada_cult=htmlspecialchars($_REQUEST['perioada']);
+		$maniera_inmul=htmlspecialchars($_REQUEST['inmultire']);
+
+
+		if(isset($_POST["submit"])) {
+	   		if(!getimagesize($_FILES["fileToUpload"]["tmp_name"])){
+	   			die("Nu este imagine!".header("refresh:1;url=\\BoW/test.php"));
+	   		}
 		}
-		echo "<p>Planta a fost inregistrata! Veti fi redirectat catre pagina principala in 5 secunde.</p>";
+		$image = file_get_contents($_FILES['fileToUpload']['tmp_name']);
+		$ext = pathinfo($_FILES['fileToUpload']['name'], PATHINFO_EXTENSION);
+
+		$register= new register();
+		$register->registerPlanta($categorii,$beneficii,$username,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$image,$ext);
+		
 		header("Location: \\BoW/index.php");
 	?>
 

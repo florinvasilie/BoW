@@ -26,10 +26,6 @@
 			header("refresh:2;url=\\BoW/index.php");
 			die("Eroare server: ".$e->getMessage());
 		}
-		// $sql="UPDATE utilizatori SET passwd='".$_REQUEST["parola"]."',
-	 //    	nume='".$_REQUEST["nume"]."',
-	 //    	data_nasterii=TO_DATE('".$_REQUEST["datan"]."','YYYY-MM-DD')
-	 //    	WHERE username='".$_REQUEST["username"]."'";
 		$sql="UPDATE utilizatori SET passwd=:parola,
 	    	nume=:nume,
 	    	data_nasterii=TO_DATE(:datan,'YYYY-MM-DD')

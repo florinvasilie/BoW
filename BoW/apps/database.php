@@ -1,18 +1,4 @@
 <?php
- /* Copyright (C) <2015>  <Pohrib Petre Mihail & Vasilie Florin Paul>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 	define('USERNAME','c##florin');
 	define('PASSWORD','1234');
 	define('DATABASE','localhost/orcl');
@@ -26,7 +12,7 @@
 			$this->conn=oci_pconnect(USERNAME, PASSWORD, DATABASE);
 			if (!$this->conn){
 				$m=oci_error();
-				throw new Exception('Nu s-a putut conecta la baza de date: '.$m["message"]);	
+				throw new Exception('Nu s-a putut conecta la baza de date!');	
 			}
 		}
 		function __destruct() {
@@ -39,7 +25,7 @@
 	    	$this->stid = oci_parse($this->conn, $sql);
 	    	if (!$this->stid){
 	    		$m=oci_error($this->conn);
-	    		throw new Exception('Nu s-a putut parsa interogarea: '.$m["message"]);
+	    		throw new Exception('Nu s-a putut parsa interogarea!');
 	    	}
 	        if ($this->prefetch >= 0) {
 	            oci_set_prefetch($this->stid, $this->prefetch);
@@ -51,12 +37,12 @@
 	        $r=oci_execute($this->stid, OCI_NO_AUTO_COMMIT);
 	        if(!$r){
 	        	 $m = oci_error($this->stid);
-	        	 throw new Exception('Nu s-a putut executa interogarea: '.$m["message"]);
+	        	 throw new Exception('Nu s-a putut executa interogarea!');
 	        }
 	        $r = oci_commit($this->conn);
 	        if (!$r){
 	        	$m=oci_error($this->conn);
-	        	throw new Exception('Eroare la commit: '.$m["message"]);
+	        	throw new Exception('Eroare la commit!');
 	        }
 	    }
 	    public function execFetchAll($sql,$bindvars=array()){

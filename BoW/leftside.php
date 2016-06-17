@@ -1,7 +1,7 @@
 <aside>
-	<form action="rezultate.php" method="post">
+	<form action="cautare.php" method="post">
 		<label for="search" class="sr-only">Search</label>
-		<input type="search" name="search" placeholder="Cautare" id="search">
+		<input type="search" name="search" placeholder="Cautare" id="search" pattern="[A-Za-z]+" title="Doar litere!">
 	
 	</form>
 

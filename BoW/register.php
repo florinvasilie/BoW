@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Pet4Web</title>
+	<title>BoW</title>
 	<link rel="stylesheet" type="text/css" href="resources/css/main.css">
 	<script src="resources/js/afisarebutoane.js" type="text/javascript"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,14 +16,14 @@
 ?>
 	<div class="main-content new-petition">
 		<h2>Register</h2>
-			<form action="apps/register.php" method="post">
+			<form action="apps/register.php" method="post"> 
 				<div class="form-group">
 					<label for="username">Username</label>
-					<input id="username" name="username" type="text" placeholder="Username" required>
+					<input id="username" name="username" type="text" placeholder="Username" pattern="[a-zA-Z0-9-]{1,32}" title="Doar litere si cifre! Dimensiunea maxima:32!" required>
 				</div>
 				<div class="form-group">
 					<label for="username">Nume</label>
-					<input id="username" name="nume" type="text" placeholder="Nume" required>
+					<input id="username" name="nume" type="text" placeholder="Nume" pattern="[a-zA-Z0-9-]{1,50}" title="Doar litere si cifre! Dimensiunea maxima:50!" required>
 				</div>
 				<div class="form-group">
 					<label for="email">Email</label>
@@ -35,8 +35,10 @@
 				</div>
 				<div class="form-group">
 					<label for="password">Parola</label>
-					<input id="password" name="parola" type="password" placeholder="Parola" required>
+					<input id="password" name="parola" type="password" placeholder="Parola" pattern="[a-zA-Z0-9-]{6,32}" title="Doar litere si cifre! Dimensiunea parolei intre 6-32 litere si numere!" required>
 				</div>
+
+
 				<button class="btn-primary pull-right" name="buton" type="submit">
 				Trimite!</button>
 			</form>
