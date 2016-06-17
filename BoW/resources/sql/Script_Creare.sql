@@ -50,7 +50,7 @@ CREATE TABLE gradini(
 	spatiu_gradi NUMBER(10)
 );
 CREATE TABLE imagini(
-	id_planta NUMBER(10) DEFAULT 0,
+	id_plant NUMBER(10) DEFAULT 0,
 	imagine BLOB
 );
 /

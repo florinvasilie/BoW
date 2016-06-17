@@ -8,7 +8,7 @@
 </head>
 <body>
 <?php
-	require_once("input.php");
+	require_once("UsersManag.php");
 	$username=htmlspecialchars($_REQUEST["username"]);
 	$passwd=htmlspecialchars($_REQUEST["parola"]);
 	$nume=htmlspecialchars($_REQUEST["nume"]);

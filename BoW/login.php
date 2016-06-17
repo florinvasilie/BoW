@@ -19,11 +19,11 @@
 			<form action="apps/login.php" method="post">
 				<div class="form-group">
 					<label for="username">Username</label>
-					<input name="nume" type="text" placeholder="Username" id="username" pattern="[a-zA-Z0-9-]+" title="Doar litere si cifre!" required>
+					<input name="nume" type="text" placeholder="Username" id="username" pattern="[a-zA-Z0-9-]{1,32}" title="Doar litere si cifre! Dimensiunea maxima:32!" required>
 				</div>
 				<div class="form-group">
 					<label for="password">Parola</label>
-					<input name="passwd" type="password" placeholder="Parola" id="password" required>
+					<input name="passwd" type="password" placeholder="Parola" id="password"  pattern="[a-zA-Z0-9-]{1,32}" title="Doar litere si cifre! Dimensiunea parolei intre 6-32 litere si numere!" required>
 				</div>
 				<button name="buton" type="submit" class="btn-primary pull-right">
 				Trimite!</button>

@@ -8,7 +8,7 @@
 </head>
 <body>
 	<?php
-		require_once("input.php");
+		require_once("UsersManag.php");
 
 		$categorii=htmlspecialchars($_REQUEST['categorii']);
 		$beneficii=htmlspecialchars($_REQUEST['beneficii']);
