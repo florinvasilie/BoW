@@ -16,7 +16,7 @@
 <div class="container">
 	<?php
 		require_once("header.php");
-		require_once("apps/database.php");
+		require_once("apps/manage.php");
 
 		if (!ctype_digit($_GET['id'])){
 			header("refresh:2;url=\\BoW/rasfoieste.php?Page=1");
@@ -29,31 +29,13 @@
 		$id=$_GET["id"];
 		?>
 		<div class="main-content new-petition">
-		<?php
-		try{
-			$db=new Database();
-			$sql="SELECT * FROM PLANTE WHERE ID_PLANTA=:var";
-			$rez=$db->execFetchAll($sql,array(array(":var",$id,-1)));
-			foreach($rez as $r){
-				echo "<p>Denumire: ".$r['DENUMIRE']."</p>";
-				echo "<p><img src= \"".$r['IMAGINE']."\"></p>";
-				echo "<p>Categorie: ".$r['CATEGORIE']."</p>";
-				echo "<p>Origine: ".$r['ORIGINE']."</p>";
-				echo "<p>Regim de dezvoltare: ".$r['REGIM_DEZV']."</p>";
-				echo "<p>Beneficii: ".$r['BENEFICII']."</p>";
-				echo "<p>Descriere: ".$r['DESCRIERE']."</p>";	
-				echo "<p>Autor: ".$r['USERNAME']."</p>";
-				echo "<p>Vizualizari: ".$r['VIZUALIZARI']."</p>";
-				$sql="UPDATE PLANTE SET VIZUALIZARI=".$r['VIZUALIZARI']."+1 WHERE ID_PLANTA=:var";
-				$rez=$db->execute($sql,array(array(":var",$id,-1)));
-			}
-		}catch(Exception $e){
-			echo $e->getMessage();
-		}
-	?>
 
 		<?php
-		if (isset($_SESSION['username'])){
+		$manage=new managePlante();
+		$manage->details($id);
+		$manage->showImage($id);
+
+	/*	if (isset($_SESSION['username'])){
 			try{
 				$sql="select passwd from utilizatori where username='".$_SESSION['username']."'";
 				$rez=$db->execFetchAll($sql);
@@ -100,7 +82,7 @@
 		}
 		foreach($rez as $r){
 			echo "<h2>Aceasta planta a fost votata de ".$r['NRVOTURI']." ori!</h2>";
-		}
+		}*/
 
 	?>
 

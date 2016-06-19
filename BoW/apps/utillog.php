@@ -14,6 +14,7 @@
 				$pass=$r['PASSWD'];
 				$pass= preg_replace('/\s+/', '',$pass);
 				if ($pass==$_SESSION['password']){
+					echo "<li><a class=\"btn-primary\" href=\"\\BoW/gradina.php\">Gradina mea</a></li>";
 					echo "<li><a class=\"btn-primary\" href=\"\\BoW/userpage.php\">Contul meu</a></li>";
 					echo "<li><a class=\"btn-primary\" href=\"\\BoW/logout.php\">Logout</a></li>";
 				}

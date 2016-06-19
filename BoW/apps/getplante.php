@@ -10,10 +10,10 @@
 		require_once("database.php");
 		$req=$_GET['q'];
 		if($req=="top"){
-			$sql="SELECT * FROM (SELECT id_planta,denumire,username,data_postarii,vizualizari FROM plante ORDER BY vizualizari DESC) WHERE rownum<=5";
+			$sql="SELECT * FROM (SELECT id_planta,denumire,username,data_postarii,vizualizari FROM plante ORDER BY vizualizari DESC) WHERE rownum<=10";
 		}
 		else{
-			$sql="SELECT * FROM (SELECT id_planta,denumire,username,data_postarii,vizualizari FROM plante ORDER BY data_postarii DESC) WHERE ROWNUM<=5";
+			$sql="SELECT * FROM (SELECT id_planta,denumire,username,data_postarii,vizualizari FROM plante ORDER BY data_postarii DESC) WHERE ROWNUM<=10";
 		}
 		if ($sql!=''){
 			try{

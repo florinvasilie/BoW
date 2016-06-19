@@ -7,7 +7,7 @@
 	<nav class="primary-navigation">
 		<ul>
 			<li><a href="index.php">Acasa</a></li>
-			<li><a href="planta_noua.php">Adauga planta noua</a></li>
+		<!--	<li><a href="planta_noua.php">Adauga planta noua</a></li> -->
 			<li><a href="rasfoieste.php?Page=1">Rasfoieste plante</a></li>
 			<li><a href="despre.php">Despre</a></li>
 			<li><a href="contact.php">Contact</a></li>

@@ -57,18 +57,18 @@
 								<input id="origin" name="origine" type="text" placeholder="Originea plantei" pattern="[a-zA-Z0-9-]{1,50}" title="Doar litere si cifre!" required>
 							</div>
 							<div class="form-group">
-								<label for="spa">Spatiul alocat plantei(km)</label> <!--TODO DE VERIFICAT SPATIUL DUPA CE FAC GRADINA -->
-								<input id="space" name="spatiu" type="text" placeholder="Spatiul alocat plaintei(km)" pattern="[0-9]{1,10}" title="Doar cifre!" required>
+								<label for="spa">Spatiul alocat plantei(mp)</label> <!--TODO DE VERIFICAT SPATIUL DUPA CE FAC GRADINA -->
+								<input id="space" name="spatiu" type="text" placeholder="Spatiul alocat plaintei(mp)" pattern="[0-9]{1,10}" title="Doar cifre!" required>
 							</div>
 							<div class="form-group">
 								<label for="img">Incarca imagine</label>
-								<input name="fileToUpload" type="file" accept="image/*" required>
+								<input type="file" name="fileToUpload[]" id="fileToUpload"  accept="image/*" multiple="" required>
 							</div>
 							<div class="form-group">
 								<label for="desc">Descriere</label>
 								<textarea name="descriere" id="desc" required></textarea>
 							</div>
-							<button class="btn-primary pull-right" name="buton" type="submit">Posteaza
+							<button class="btn-primary pull-right" name="submit" type="submit">Posteaza
 							</button>
 						</form>
 					</div>
