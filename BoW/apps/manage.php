@@ -128,6 +128,22 @@
 				oci_free_statement($result);
 				$blob->free(); 
 			}
+			try{
+				$rez=$db->execFetchAll("SELECT spatiu_gradi FROM GRADINI WHERE ID_GRADINA=:id_gradina",array(array(":id_gradina",$id_gradina,-1)));
+			}catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			foreach($rez as $r){
+				$spatiu_gradi=$r['SPATIU_GRADI'];
+			}
+			$newSpatiuGradi=$spatiu_gradi-$spatiu;
+			$sql1="UPDATE gradini SET spatiu_gradi=:spatiu_gradi WHERE ID_GRADINA=:id_gradina";
+			try{
+				$db->execute($sql1,array(array(":spatiu_gradi",$newSpatiuGradi,-1),array(":id_gradina",$id_gradina,-1)));
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
 		}
 
 	}
@@ -265,6 +281,36 @@
 			catch(Exception $e){
 				die("Serverul a intalnit o eroare: ".$e->getMessage());
 			}
+			try{
+				$rez1=$db->execFetchAll("SELECT SPATIU FROM PLANTE WHERE ID_PLANTA=:id2",array(array(":id2",$id,-1)));
+			}catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			foreach($rez1 as $r){
+				$spatiu=$r['SPATIU'];
+			}
+
+			$id_gradina=htmlspecialchars($_SESSION['id_gradina']);
+			try{
+				$rez=$db->execFetchAll("SELECT spatiu_gradi FROM GRADINI WHERE ID_GRADINA=:id_gradina",array(array(":id_gradina",$id_gradina,-1)));
+			}catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			foreach($rez as $r){
+				$spatiu_gradi=$r['SPATIU_GRADI'];
+			}
+
+			$newSpatiuGradi=$spatiu_gradi+$spatiu;
+			
+			$sql1="UPDATE gradini SET spatiu_gradi=:spatiu_gradi WHERE ID_GRADINA=:id_gradina";
+			try{
+				$db->execute($sql1,array(array(":spatiu_gradi",$newSpatiuGradi,-1),array(":id_gradina",$id_gradina,-1)));
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
+
+
 			$sql="delete from plante where id_planta=:id";
 			try{
 				$db->execute($sql,array(array(":id",htmlspecialchars($id),-1)));
@@ -279,6 +325,14 @@
 			catch(Exception $e){
 				die("Serverul a intalnit o eroare: ".$e->getMessage());
 			}
+			$sql2="DELETE FROM imagini WHERE ID_PLANT=:id_planta";
+			try{
+				$db->execute($sql2,array(array(":id_planta",$id,-1)));
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}			
+
 		}
 		public function updatePlanta($id_gradina,$id_planta,$categorii,$beneficii,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files){
 			try{
@@ -287,17 +341,6 @@
 				header("refresh:2;url=\\BoW/index.php");
 				die("Eroare server: ".$e->getMessage());
 			}
-			$sql="UPDATE plante SET categorie=:categorii,
-		    	beneficii=:beneficii,
-		    	data_postarii=SYSDATE,
-		    	denumire=:denumire,
-		    	origine=:origine,
-		    	regim_dezv=:dezvoltare,
-		    	descriere=:descriere,
-		    	spatiu=:spatiu,
-		    	perioada_cult=:perioada_cult,
-		    	maniera_inmul=:maniera_inmul
-		    	WHERE id_planta=:id_planta";
 
 		    try{
 				$rez=$db->execFetchAll("SELECT spatiu_gradi FROM GRADINI WHERE ID_GRADINA=:id_gradina",array(array(":id_gradina",$id_gradina,-1)));
@@ -316,6 +359,17 @@
 				$spatiu_planta=$r['SPATIU'];
 			}
 			$newSpatiuGradi=$spatiu_gradi+$spatiu_planta-$spatiu;
+			$sql="UPDATE plante SET categorie=:categorii,
+		    	beneficii=:beneficii,
+		    	data_postarii=SYSDATE,
+		    	denumire=:denumire,
+		    	origine=:origine,
+		    	regim_dezv=:dezvoltare,
+		    	descriere=:descriere,
+		    	spatiu=:spatiu,
+		    	perioada_cult=:perioada_cult,
+		    	maniera_inmul=:maniera_inmul
+		    	WHERE id_planta=:id_planta";
 			try{
 				$db->execute($sql,array(array(":categorii",$categorii,-1),array(":beneficii",$beneficii,-1),array(":denumire",$denumire,-1),array(":origine",$origine,-1),array(":dezvoltare",$dezvoltare,-1),array(":descriere",$descriere,-1),array(":spatiu",$spatiu,-1),array(":perioada_cult",$perioada_cult,-1),array(":maniera_inmul",$maniera_inmul,-1),array(":id_planta",$id_planta,-1)));
 			}catch(Exception $e){
@@ -405,6 +459,48 @@
 			}catch(Exception $e){
 				echo $e->getMessage();
 			}
+		}
+		public function deteleGradina($id){
+			try{
+			$db= new Database();
+			}catch(Exception $e){
+				die("Eroare server: ".$e->getMessage());
+				header("refresh:5;url=\\BoW/index.php");
+			}
+			$sql="delete from plante where id_gradina=:id";
+			try{
+				$db->execute($sql,array(array(":id",htmlspecialchars($id),-1)));
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			$sql1="delete from gradini where id_gradina=:id1";
+			try{
+				$db->execute($sql1,array(array(":id1",htmlspecialchars($id),-1)));
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+
+		}
+		public function updateGradina($id_gradina,$nume_gradi,$spatiu){
+			try{
+			$db= new Database();
+			}catch(Exception $e){
+				die("Eroare server: ".$e->getMessage());
+				header("refresh:5;url=\\BoW/index.php");
+			}
+			$sql="UPDATE gradini SET nume_gradi=:nume_gradi,
+		    	spatiu_gradi=:spatiu_gradi
+		    	WHERE id_gradina=:id_gradina";
+		    try{
+				$db->execute($sql,array(array(":nume_gradi",$nume_gradi,-1),array(":spatiu_gradi",$spatiu_gradi,-1),array(":id_gradina",$id_gradina,-1)));
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
+		  
+
 		}
 	}
 ?>

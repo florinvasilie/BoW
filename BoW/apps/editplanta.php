@@ -11,7 +11,6 @@
 		require_once("manage.php");
 		$categorii=htmlspecialchars($_REQUEST['categorii']);
 		$beneficii=htmlspecialchars($_REQUEST['beneficii']);
-	//	$username=htmlspecialchars($_SESSION['username']);
 		$denumire=htmlspecialchars($_REQUEST['denumire']);
 		$origine=htmlspecialchars($_REQUEST['origine']);
 		$dezvoltare=htmlspecialchars($_REQUEST['dezvoltare']);
@@ -47,7 +46,7 @@
 		$manage->updatePlanta($id_gradina,$id_planta,$categorii,$beneficii,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files);
 		
 		//echo "<p>Datele au fost modificate cu succes! Veti fi redirectionat pe pagina contului</p>";
-		header("Location: \\BoW/userpage.php");
+		header("Location: \\BoW/manage.php");
 	?>
 </body>
 </html>

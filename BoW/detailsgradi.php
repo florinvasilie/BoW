@@ -44,14 +44,41 @@
 		}
 		$id=$_GET['id'];
 		$_SESSION['id_gradina']=htmlspecialchars($id);
+		try{
+			$db=new Database();
+		}
+		catch(Exception $e){
+			die("Serverul a intalnit o eroare: ".$e->getMessage());
+		}
+		try{
+			$rez1=$db->execFetchAll("SELECT COUNT(*) AS NR FROM GRADINI WHERE ID_GRADINA=:id_gradina",array(array(":id_gradina",$id,-1)));
+		}catch(Exception $e){
+			die("Serverul a intalnit o eroare: ".$e->getMessage());
+		}
+		foreach($rez1 as $r){
+			$nr=$r['NR'];
+		}
+		if ($nr==0){
+			die("Ai modificat id-ul fara permisiune!");
+		}
+		try{
+			$rez=$db->execFetchAll("SELECT spatiu_gradi, nume_gradi FROM GRADINI WHERE ID_GRADINA=:id_gradina",array(array(":id_gradina",$id,-1)));
+		}catch(Exception $e){
+			die("Serverul a intalnit o eroare: ".$e->getMessage());
+		}
+		foreach($rez as $r){
+			$spatiu_gradi=$r['SPATIU_GRADI'];
+			$nume_gradi=$r['NUME_GRADI'];
+		}
 		// informatii despre spatiul total al gradinilor, ceva legat de spatiu?
 	?>
 		<aside>
-			<h2>Administrare gradina</h2>
+			<h2>Administrare gradina: <?=$nume_gradi?></h2>
+			<h3>Spatiu disponibil in gradina: <?=$spatiu_gradi?></h3>
 			<ul class="categories">
 				<li><a class="btn-primary" href="planta_noua.php">Adauga planta noua</a></li>
-				<li><a class="btn-primary" href="gradina_noua.php">Sterge gradina</a></li>
-				<li><a class="btn-primary" href="gradina_noua.php">Editeaza gradina</a></li>
+				<li><a class="btn-primary" href="apps/delgradina.php?id=<?=$id?>">Stergere gradina</a></li>
+				<li><a class="btn-primary" href="modificare_gradina.php?id=<?=$id?>">Editeaza gradina</a></li>
 			</ul>
 		</aside>
 			

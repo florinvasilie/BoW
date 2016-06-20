@@ -38,10 +38,27 @@
 	<?php
 		require_once("header.php");
 		require_once("apps/database.php");
+		try{
+			$db=new Database();
+		}
+		catch(Exception $e){
+			die("Serverul a intalnit o eroare: ".$e->getMessage());
+		}
+		try{
+			$rez=$db->execFetchAll("SELECT COUNT(*) AS TOTAL FROM GRADINI WHERE username=:username",array(array(":username",$_SESSION['username'],-1)));
+		}catch(Exception $e){
+			die("Serverul a intalnit o eroare: ".$e->getMessage());
+		}
+		foreach($rez as $r){
+			$nr_gradini=$r['TOTAL'];
+		}
+		if($nr_gradini==0)
+			echo "<p>Nu ai creat nicio gradina!</>";
 		// informatii despre spatiul total al gradinilor, ceva legat de spatiu?
 	?>
 		<aside>
-			<h2>Informatii</h2>	
+			<h2>Informatii</h2>
+			<h3>Numarul de gradini create: <?=$nr_gradini?></h3>	
 				<a class="btn-primary" href="gradina_noua.php">Gradina noua</a>
 		</aside>
 			

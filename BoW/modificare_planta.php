@@ -19,7 +19,7 @@
 	<div class="main-content new-petition">
 		<?php
 			if (!ctype_digit($_GET['id'])){
-				header("refresh:2;url=\\BoW/rasfoieste.php?Page=1");
+				header("refresh:2;url=\\BoW/gradina.php");
 				die("<p>Serverul a intampinat o eroare!</p>");
 			}
 			if(!$_GET["id"]){
