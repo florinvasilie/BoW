@@ -23,7 +23,7 @@
 		            document.getElementById("listaplanta").innerHTML = ajax1.responseText;
 		        }
 		    }
-		    ajax1.open("GET","\\BoW/apps/paguser.php?Page="+val,true);
+		    ajax1.open("GET","\\BoW/apps/paginaregradini.php?Page="+val,true);
 		    ajax1.send();
 		}
 		

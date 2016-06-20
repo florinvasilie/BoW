@@ -20,8 +20,9 @@
 		$spatiu=htmlspecialchars($_REQUEST['spatiu']); //todo
 		$perioada_cult=htmlspecialchars($_REQUEST['perioada']);
 		$maniera_inmul=htmlspecialchars($_REQUEST['inmultire']);
+		$id_gradina=htmlspecialchars($_SESSION['id_gradina']);
 
-
+		// imi creez un array de fisiere
 		$files=array();
 		$fdata=$_FILES['fileToUpload'];
 		if(isset($_POST["submit"])) {
@@ -45,9 +46,9 @@
 	   	}
 
 		$register= new register();
-		$register->registerPlanta($categorii,$beneficii,$username,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files);
+		$register->registerPlanta($id_gradina,$categorii,$beneficii,$username,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files);
 		
-		header("Location: \\BoW/index.php");
+		header("Location: \\BoW/gradina.php");
 	?>
 
 </body>

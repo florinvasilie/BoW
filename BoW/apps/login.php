@@ -15,7 +15,7 @@
 	if ($cont==0){
 		$checkUser->checkUser($username);
 	}
-	die();
+	
 ?>	
 </body>
 </html>

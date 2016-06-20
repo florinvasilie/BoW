@@ -35,22 +35,27 @@
 					$data_postarii=$planta->appendChild($data_postarii);
 					$username=$dom->createElement('Username',$r['USERNAME']);
 					$username=$planta->appendChild($username);
+
 					$vizualizari=$dom->createElement('Vizualizari',$r['VIZUALIZARI']);
 					$vizualizari=$planta->appendChild($vizualizari);
+
 					$denumire=$dom->createElement('Denumire',$r['DENUMIRE']);
 					$denumire=$planta->appendChild($denumire);
+
 					$origine=$dom->createElement('Origine',$r['ORIGINE']);
 					$origine=$planta->appendChild($origine);
+
 					$regim_dezv=$dom->createElement('Regim_dezv',$r['REGIM_DEZV']);
 					$regim_dezv=$planta->appendChild($regim_dezv);
+
 					$descriere=$dom->createElement('Descriere',$r['DESCRIERE']);
 					$descriere=$planta->appendChild($descriere);
-					$spatiu=$dom->createElement('Spatiu',$r['SPATIU']);
-					$spatiu=$planta->appendChild($spatiu);
-					$perioada_cult=$dom->createElement('Perioada_cult',$r['PERIOADA_CULT']);
-					$perioada_cult=$planta->appendChild($perioada_cult);
-					$maniera_inmul=$dom->createElement('Maniera_inmul',$r['MANIERA_INMUL']);
-					$maniera_inmul=$planta->appendChild($maniera_inmul);
+
+					$imagine=$dom->createElement('Imagine',$r['IMAGINE']);
+					$imagine=$planta->appendChild($imagine);
+
+
+
 		}
 		$dir='Rapoarte';
 		if(!is_dir($dir))

@@ -1,5 +1,6 @@
 <?php
 	class register{
+		private $id_gradina;
 		function __construct()
 		{
 			require_once("database.php");
@@ -78,18 +79,18 @@
 				die("Eroare server: ".$e->getMessage());
 			}		
 		}
-		public function registerPlanta($categorii,$beneficii,$username,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files){
+		public function registerPlanta($id_gradina,$categorii,$beneficii,$username,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files){
 			try{
 			$db= new Database();
 			}catch(Exception $e){
 				die("Eroare server: ".$e->getMessage());
 				header("refresh:5;url=\\BoW/index.php");
 			}
-			$sql="insert into plante(categorie,beneficii,data_postarii,username,vizualizari,denumire,origine,regim_dezv,descriere,spatiu,perioada_cult,maniera_inmul)". 
-			"values(:categorii,:beneficii,SYSDATE,:username,0,:denumire,:origine,:dezvoltare,:descriere,:spatiu,:perioada_cult,:maniera_inmul)";
+			$sql="insert into plante(id_gradina,categorie,beneficii,data_postarii,username,vizualizari,denumire,origine,regim_dezv,descriere,spatiu,perioada_cult,maniera_inmul)". 
+			"values(:id_gradina,:categorii,:beneficii,SYSDATE,:username,0,:denumire,:origine,:dezvoltare,:descriere,:spatiu,:perioada_cult,:maniera_inmul)";
 			// inserez in plante campurile din formular
 			try{
-				$db->execute($sql,array(array(":categorii",$categorii,-1),array(":beneficii",$beneficii,-1),
+				$db->execute($sql,array(array(":id_gradina",$id_gradina,-1),array(":categorii",$categorii,-1),array(":beneficii",$beneficii,-1),
 				array(":username",$username,-1),array(":denumire",$denumire,-1),array(":origine",$origine,-1),array(":dezvoltare",$dezvoltare,-1),array(":descriere",$descriere,-1),array(":spatiu",$spatiu,-1),array(":perioada_cult",$perioada_cult,-1),array(":maniera_inmul",$maniera_inmul,-1)));
 			}catch(Exception $e){
 				die("Eroare server: ".$e->getMessage()."Incercati mai tarziu!");
@@ -106,10 +107,10 @@
 			foreach ($rez as $r) {
 				$id_plant=$r['TEST'];
 			}
-			echo "<p>".$id_plant."</p>";
+
 	
 			$connection=oci_connect("c##florin","1234","localhost/orcl");
-			//inserez imaginea in baza de date ca fiin tipul BLOB 
+			//inserez imaginea in baza de date ca fiind tipul BLOB 
 			$sql = "INSERT INTO imagini (id_plant,imagine) VALUES (".$id_plant.",empty_blob()) RETURNING imagine INTO :image";
 			foreach ($files as $file) {
 				$result = oci_parse($connection, $sql);
@@ -256,6 +257,154 @@
 				echo ('<img src="data:img/;base64,'.base64_encode($img).'" />');
 			}
 			echo "<br>";
+		}
+		public function deletePlanta($id){
+			try{
+			$db=new Database();
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			$sql="delete from plante where id_planta=:id";
+			try{
+				$db->execute($sql,array(array(":id",htmlspecialchars($id),-1)));
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			$sql="delete from aprecieri where id_planta=:id";
+			try{
+				$db->execute($sql,array(array(":id",htmlspecialchars($id),-1)));
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+		}
+		public function updatePlanta($id_gradina,$id_planta,$categorii,$beneficii,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files){
+			try{
+			$db = new Database();
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
+			$sql="UPDATE plante SET categorie=:categorii,
+		    	beneficii=:beneficii,
+		    	data_postarii=SYSDATE,
+		    	denumire=:denumire,
+		    	origine=:origine,
+		    	regim_dezv=:dezvoltare,
+		    	descriere=:descriere,
+		    	spatiu=:spatiu,
+		    	perioada_cult=:perioada_cult,
+		    	maniera_inmul=:maniera_inmul
+		    	WHERE id_planta=:id_planta";
+
+		    try{
+				$rez=$db->execFetchAll("SELECT spatiu_gradi FROM GRADINI WHERE ID_GRADINA=:id_gradina",array(array(":id_gradina",$id_gradina,-1)));
+			}catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			foreach($rez as $r){
+				$spatiu_gradi=$r['SPATIU_GRADI'];
+			}
+			try{
+				$rez1=$db->execFetchAll("SELECT spatiu FROM PLANTE WHERE ID_PLANTA=:id_planta",array(array(":id_planta",$id_planta,-1)));
+			}catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			foreach($rez1 as $r){
+				$spatiu_planta=$r['SPATIU'];
+			}
+			$newSpatiuGradi=$spatiu_gradi+$spatiu_planta-$spatiu;
+			try{
+				$db->execute($sql,array(array(":categorii",$categorii,-1),array(":beneficii",$beneficii,-1),array(":denumire",$denumire,-1),array(":origine",$origine,-1),array(":dezvoltare",$dezvoltare,-1),array(":descriere",$descriere,-1),array(":spatiu",$spatiu,-1),array(":perioada_cult",$perioada_cult,-1),array(":maniera_inmul",$maniera_inmul,-1),array(":id_planta",$id_planta,-1)));
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
+			$sql1="UPDATE gradini SET spatiu_gradi=:spatiu_gradi WHERE ID_GRADINA=:id_gradina";
+			try{
+				$db->execute($sql1,array(array(":spatiu_gradi",$newSpatiuGradi,-1),array(":id_gradina",$id_gradina,-1)));
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
+			$sql2="DELETE FROM imagini WHERE ID_PLANT=:id_planta";
+			try{
+				$db->execute($sql2,array(array(":id_planta",$id_planta,-1)));
+			}catch(Exception $e){
+				header("refresh:2;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
+			$connection=oci_connect("c##florin","1234","localhost/orcl");
+
+			//inserez imaginea in baza de date ca fiind tipul BLOB 
+			
+			$sql3 = "INSERT INTO imagini (id_plant,imagine) VALUES (".$id_planta.",empty_blob()) RETURNING imagine INTO :image";
+			foreach ($files as $file) {
+				$result = oci_parse($connection, $sql3);
+				$blob = oci_new_descriptor($connection, OCI_D_LOB);
+				oci_bind_by_name($result, ":image", $blob, -1, OCI_B_BLOB);
+				oci_execute($result, OCI_DEFAULT) or die ("Unable to execute query");
+				$image = file_get_contents($file['tmp_name']);
+				if(!$blob->save($image)) {
+			    oci_rollback($connection);
+				}
+				else {
+				    oci_commit($connection);
+				}
+
+				oci_free_statement($result);
+				$blob->free(); 
+			}
+		}
+	}
+	class manageGradini{
+		function __construct()
+		{
+			require_once("database.php");
+		}
+		public function registerGradina($username,$nume_gradi, $spatiu_gradi){
+			try{
+			$db= new Database();
+			}catch(Exception $e){
+				die("Eroare server: ".$e->getMessage());
+				header("refresh:5;url=\\BoW/index.php");
+			}
+			$sql="insert into gradini(username, nume_gradi,spatiu_gradi)". 
+			"values(:username,:nume_gradi,:spatiu_gradi)";
+			// inserez in gradini campurile din formular
+			try{
+				$db->execute($sql,array(array(":username",$username,-1),array(":nume_gradi",$nume_gradi,-1),array(":spatiu_gradi",$spatiu_gradi,-1)));
+			}catch(Exception $e){
+				die("Eroare server: ".$e->getMessage()."Incercati mai tarziu!");
+				header("refresh:5;url=\\BoW/index.php");
+			}
+		}
+		public function details($id,$page){
+			try{
+			$db=new Database();
+			$sql="SELECT * FROM GRADINI WHERE ID_GRADINA=:var";
+			$rez=$db->execFetchAll($sql,array(array(":var",$id,-1)));
+			foreach($rez as $r){
+				echo "<p>Denumire: ".$r['DENUMIRE']."</p>";
+				echo "<p>Categorie: ".$r['CATEGORIE']."</p>";
+				echo "<p>Origine: ".$r['ORIGINE']."</p>";
+				echo "<p>Regim de dezvoltare: ".$r['REGIM_DEZV']."</p>";
+				echo "<p>Perioada Cultivare: ".$r['PERIOADA_CULT']."</p>";
+				echo "<p>Maniera inmultire: ".$r['MANIERA_INMUL']."</p>";
+				echo "<p>Beneficii: ".$r['BENEFICII']."</p>";
+				echo "<p>Spatiul ocupat(mp): ".$r['SPATIU']."</p>";
+				echo "<p>Ultima actualizare: ".$r['DATA_POSTARII']."</p>";
+				echo "<p>Descriere:<textarea readonly>".$r['DESCRIERE']."</textarea></p>";	
+				echo "<p>Autor: ".$r['USERNAME']."</p>";
+				echo "<p>Vizualizari: ".$r['VIZUALIZARI']."</p>";
+				$sql="UPDATE PLANTE SET VIZUALIZARI=".$r['VIZUALIZARI']."+1 WHERE ID_PLANTA=:var";
+				$rez=$db->execute($sql,array(array(":var",$id,-1)));
+			}
+			}catch(Exception $e){
+				echo $e->getMessage();
+			}
 		}
 	}
 ?>

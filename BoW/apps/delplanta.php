@@ -8,29 +8,16 @@
 </head>
 <body>
 	<?php
-		require_once("database.php");
+		require_once("manage.php");
+		if (!ctype_digit($_GET['id'])){
+			header("refresh:2;url=\\BoW/gradina.php");
+			die("<p>Serverul a intampinat o eroare!</p>");
+		}
 		$id=$_GET['id'];
-		try{
-			$db=new Database();
-		}
-		catch(Exception $e){
-			die("Serverul a intalnit o eroare: ".$e->getMessage());
-		}
-		$sql="delete from plante where id_planta=:id";
-		try{
-			$db->execute($sql,array(array(":id",htmlspecialchars($id),-1)));
-		}
-		catch(Exception $e){
-			die("Serverul a intalnit o eroare: ".$e->getMessage());
-		}
-		$sql="delete from aprecieri where id_planta=:id";
-		try{
-			$db->execute($sql,array(array(":id",htmlspecialchars($id),-1)));
-		}
-		catch(Exception $e){
-			die("Serverul a intalnit o eroare: ".$e->getMessage());
-		}
-		header("location:\\BoW/userpage.php");
+		$managePlante= new managePlante();
+		$managePlante->deletePlanta($id);
+		
+		header("location:\\BoW/gradina.php");
 	?>
 </body>
 </html>

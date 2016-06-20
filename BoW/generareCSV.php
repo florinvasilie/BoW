@@ -19,9 +19,9 @@
 		}catch(Exception $e){
 			die("Eroare server: ".$e->getMessage());
 		}
-		$csv="id_planta,id_gradina,categorie,beneficii,data_postarii,username,vizualizari,denumire,origine,regim_dezv,descriere,spatiu,perioada_cult,maniera_inmul\n";
+		$csv="id_planta,categorie,beneficii,data_postarii,username,vizualizari,denumire,origine,regim_dezv,descriere,imagine\n";
 		foreach($rez as $r){
-					$csv.=$r['ID_PLANTA'] .$r['ID_GRADINA'] . $r['CATEGORIE']."," .$r['BENEFICII']."," .$r['DATA_POSTARII']."," .$r['USERNAME']."," .$r['VIZUALIZARI']."," .$r['DENUMIRE']."," .$r['ORIGINE']."," .$r['REGIM_DEZV']."," .$r['DESCRIERE']."," .$r['SPATIU']."," .$r['PERIOADA_CULT']."," .$r['MANIERA_INMUL']."\n";
+					$csv.=$r['ID_PLANTA'] . $r['CATEGORIE']."," .$r['BENEFICII']."," .$r['DATA_POSTARII']."," .$r['USERNAME']."," .$r['VIZUALIZARI']."," .$r['DENUMIRE']."," .$r['ORIGINE']."," .$r['REGIM_DEZV']."," .$r['DESCRIERE']."," .$r['IMAGINE']."\n";
 		}
 		
 		

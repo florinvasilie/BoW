@@ -1,4 +1,5 @@
 <?php
+	session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -7,48 +8,45 @@
 </head>
 <body>
 	<?php
-		require_once("database.php");
-		if(!htmlspecialchars($_REQUEST["id_planta"])){
-			die();
-		}
-		if(!htmlspecialchars($_REQUEST["denumire"])){
-			echo "<p>Nu ati specificat denumirea plantei!</p>";
-			die();
-		}
-		if(!htmlspecialchars($_REQUEST["origine"])){
-			echo "<p>Nu ati specificat originea plantei!</p>";
-			die();
-		}
-		if(!htmlspecialchars($_REQUEST["descriere"])){
-			echo "<p>Nu ati specificat descrierea plantei!</p>";
-			die();
-		}
-		if(!htmlspecialchars($_REQUEST["imagine"])){
-			echo "<p>Nu ati specificat imaginea plantei!</p>";
-			die();
-		}
-		try{
-		$db = new Database();
-		}catch(Exception $e){
-			header("refresh:2;url=\\BoW/index.php");
-			die("Eroare server: ".$e->getMessage());
-		}
-		$sql="UPDATE plante SET categorie=:categorii,
-	    	beneficii=:beneficii,
-	    	data_postarii=SYSDATE,
-	    	denumire=:denumire,
-	    	origine=:origine,
-	    	regim_dezv=:dezvoltare,
-	    	descriere=:descriere,
-	    	imagine=:imagine
-	    	WHERE id_planta=:id_planta";
-		try{
-			$db->execute($sql,array(array(":categorii",htmlspecialchars($_REQUEST['categorie']),-1),array(":beneficii",htmlspecialchars($_REQUEST['beneficii']),-1),array(":denumire",htmlspecialchars($_REQUEST['denumire']),-1),array(":origine",htmlspecialchars($_REQUEST['origine']),-1),array(":dezvoltare",htmlspecialchars($_REQUEST['dezvoltare']),-1),array(":descriere",htmlspecialchars($_REQUEST['descriere']),-1),array(":imagine",htmlspecialchars($_REQUEST['imagine']),-1),array(":id_planta",htmlspecialchars($_REQUEST['id_planta']),-1)));
-		}catch(Exception $e){
-			header("refresh:2;url=\\BoW/index.php");
-			die("Eroare server: ".$e->getMessage());
-		}
-		echo "<p>Datele au fost modificate cu succes! Veti fi redirectionat pe pagina contului</p>";
+		require_once("manage.php");
+		$categorii=htmlspecialchars($_REQUEST['categorii']);
+		$beneficii=htmlspecialchars($_REQUEST['beneficii']);
+	//	$username=htmlspecialchars($_SESSION['username']);
+		$denumire=htmlspecialchars($_REQUEST['denumire']);
+		$origine=htmlspecialchars($_REQUEST['origine']);
+		$dezvoltare=htmlspecialchars($_REQUEST['dezvoltare']);
+		$descriere=htmlspecialchars($_REQUEST['descriere']);
+		$spatiu=htmlspecialchars($_REQUEST['spatiu']); //todo
+		$perioada_cult=htmlspecialchars($_REQUEST['perioada']);
+		$maniera_inmul=htmlspecialchars($_REQUEST['inmultire']);
+		$id_gradina=htmlspecialchars($_SESSION['id_gradina']);
+		$id_planta=htmlspecialchars($_REQUEST['id_planta']);
+		
+		$files=array();
+		$fdata=$_FILES['fileToUpload'];
+		if(isset($_POST["submit"])) {
+			if(is_array($fdata['name'])){
+				for($i=0;$i<count($fdata['name']);++$i){
+			        $files[]=array(
+				    'name'    =>$fdata['name'][$i],
+				    'type'  => $fdata['type'][$i],
+				    'tmp_name'=>$fdata['tmp_name'][$i],
+				    'error' => $fdata['error'][$i], 
+				    'size'  => $fdata['size'][$i]  
+				    );
+			    }
+			}else $files[]=$fdata;
+		} 
+		foreach ($files as $file) {
+			if(!getimagesize($file["tmp_name"])){
+	   			die("Nu este imagine!".header("refresh:1;url=\\BoW/planta_noua.php"));
+	   		}
+	   		//echo $file['name'];
+	   	}
+	   	$manage= new managePlante();
+		$manage->updatePlanta($id_gradina,$id_planta,$categorii,$beneficii,$denumire,$origine,$dezvoltare,$descriere,$spatiu,$perioada_cult,$maniera_inmul,$files);
+		
+		//echo "<p>Datele au fost modificate cu succes! Veti fi redirectionat pe pagina contului</p>";
 		header("Location: \\BoW/userpage.php");
 	?>
 </body>

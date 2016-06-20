@@ -18,73 +18,87 @@
 	?>
 	<div class="main-content new-petition">
 		<?php
+			if (!ctype_digit($_GET['id'])){
+				header("refresh:2;url=\\BoW/rasfoieste.php?Page=1");
+				die("<p>Serverul a intampinat o eroare!</p>");
+			}
+			if(!$_GET["id"]){
+				die("A aparut o eroare!");
+			}
 			$id=$_GET['id'];
+			$id_gradina=$_SESSION['id_gradina'];
 			try{
 					$db=new Database();
 				}
 				catch(Exception $e){
 					die("Serverul a intalnit o eroare: ".$e->getMessage());
 				}
-				$sql="select denumire,categorie,beneficii,origine,regim_dezv,descriere,imagine from plante where id_planta='".$id."'";
+				$sql="select CATEGORIE, BENEFICII, DENUMIRE, ORIGINE, REGIM_DEZV, DESCRIERE,SPATIU, PERIOADA_CULT, MANIERA_INMUL  from plante where id_planta='".$id."'";
 				try{
-					$rez=$db->execFetchAll($sql);
+					$rez1=$db->execFetchAll($sql);
 				}
 				catch(Exception $e){
 					die("Serverul a intalnit o eroare: ".$e->getMessage());
 				}
-				foreach($rez as $r){
+				try{
+					$rez=$db->execFetchAll("SELECT SPATIU_GRADI FROM GRADINI where ID_GRADINA=:req",array(array(":req",($id_gradina),-1)));
+				}catch(Exception $e){
+					header("refresh:5;url=\\BoW/index.php");
+					die("Eroare server: ".$e->getMessage());
+				}
+				foreach ($rez as $r) {
+					$spatiu=$r['SPATIU_GRADI'];
+				}
+				foreach($rez1 as $r){
 				?>
-				<form action="apps/editplanta.php" method="post">
+				<form action="apps/editplanta.php" method="post" enctype="multipart/form-data">
 				
 					<div class="form-group">
 					<label for="den">Id_Planta</label>
 					<input id="den" name="id_planta" type="text" value=<?=$id ?> readonly>
 					</div>
 					<div class="form-group">
-					<label for="den">Denumire</label>
-					<input id="den" name="denumire" type="text" value=<?=$r['DENUMIRE'] ?> required>
+						<label for="denumir">Denumire planta</label>
+						<input name="denumire" type="text" placeholder="Denumire planta"   pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre!" value="<?=$r['DENUMIRE'] ?>" required>
 					</div>
-					
 					<div class="form-group">
-						<label for="category">Categorii plante</label>
-						<select name="categorii" placeholder="Categorii plante" id="category">
-							<option value="Mediteraneene" <?php if ("Mediteraneene" ==$r['CATEGORIE'] ) echo "selected"; ?>>Plante mediteraneene</option>
-							<option value="Asiatice" <?php if ("Asiatice" ==$r['CATEGORIE'] ) echo "selected"; ?>>Plante asiatice</option>
-							<option value="Conifere" <?php if ("Conifere" ==$r['CATEGORIE'] ) echo "selected"; ?>>Conifere</option>
-							<option value="Foioase" <?php if ("Foioase" ==$r['CATEGORIE'] ) echo "selected"; ?>>Foioase</option>
-							<option value="Stepa" <?php if ("Stepa" ==$r['CATEGORIE'] ) echo "selected"; ?>>Plante de stepa</option>
-						</select>
+						<label for="category">Categorie planta</label>
+						<input name="categorii" type="text" placeholder="Categorie planta" pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre!" value="<?=$r['CATEGORIE'] ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="benefits">Beneficiile plantei</label>
-						<select name="beneficii" placeholder="Beneficiile plantei" id="category">
-							<option value="Estetica" <?php if ("Estetica" ==$r['BENEFICII'] ) echo "selected"; ?>>Estetica</option>
-							<option value="Parfum" <?php if ("Parfum" ==$r['BENEFICII'] ) echo "selected"; ?>>Parfum</option>
-							<option value="Medicinal" <?php if ("Medicinal" ==$r['BENEFICII'] ) echo "selected"; ?>>Uz medicinal</option>
-							<option value="Fructifer" <?php if ("Fructifer" ==$r['BENEFICII'] ) echo "selected"; ?>>Plante fructifere</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="orig">Origine</label>
-						<input id="orig" name="origine" type="text"  value=<?=$r['ORIGINE'] ?> required>
+						<input name="beneficii" type="text" placeholder="Beneficiile plantei" pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre!" value="<?=$r['BENEFICII'] ?>" required>
 					</div>
 					<div class="form-group">
 						<label for="dezv">Regim de dezvoltare</label>
-						<select name="dezvoltare" placeholder="Regim de dezvoltare" id="category">
-							<option value="Teren deschis" <?php if ("Teren deschis" ==$r['REGIM_DEZV'] ) echo "selected"; ?>>Teren deschis</option>
-							<option value="Ghiveci" <?php if ("Ghiveci" ==$r['REGIM_DEZV'] ) echo "selected"; ?>>Ghiveci</option>
-							<option value="Sera" <?php if ("Sera" ==$r['REGIM_DEZV'] ) echo "selected"; ?>>Sera</option>
-						</select>
+						<input name="dezvoltare" type="text" placeholder="Regim de dezvoltare" pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre!" value="<?=$r['REGIM_DEZV'] ?>" required>
 					</div>
 					<div class="form-group">
-					<label for="den">Descriere</label>
-					<input id="den" name="descriere" type="text" value="<?=$r['DESCRIERE'] ?>" required>
+						<label for="per">Perioada cultivarii</label>
+						<input id="perioad" name="perioada" type="text" placeholder="Perioada cultivarii" pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre!" value="<?=$r['PERIOADA_CULT'] ?>" required>
 					</div>
 					<div class="form-group">
-					<label for="den">Link imagine</label>
-					<input id="den" name="imagine" type="text" value="<?=$r['IMAGINE'] ?>" required>
+						<label for="inm">Maniera Inmultire</label>
+						<input id="inmul" name="inmultire" type="text" placeholder="Maniera inmultire" pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre!" value="<?=$r['MANIERA_INMUL'] ?>" required>
 					</div>
-					<button class="btn-primary pull-right" name="buton" type="submit">
+					<div class="form-group">
+						<label for="orgi">Originea plantei</label>
+						<input id="origin" name="origine" type="text" placeholder="Originea plantei" pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre!" value="<?=$r['ORIGINE'] ?>" required>
+					</div>
+					<div class="form-group">
+						<label for="spa">Spatiul alocat plantei(mp)</label> 
+						<input id="space" name="spatiu" type="number" min="1" max=<?=$spatiu ?> placeholder="Spatiul alocat plantei(mp)"  required>
+					</div>
+					<div class="form-group">
+						<label for="img">Incarca imagine</label>
+						<input type="file" name="fileToUpload[]" id="fileToUpload"  accept="image/*" multiple="" required>
+					</div>
+					<div class="form-group">
+						<label for="desc">Descriere</label>
+						<textarea name="descriere" id="desc" required><?=$r['DESCRIERE'] ?></textarea>
+					</div>
+
+					<button class="btn-primary pull-right" name="submit" type="submit">
 					Trimite!</button>
 			
 				</form>

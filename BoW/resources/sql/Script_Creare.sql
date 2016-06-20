@@ -17,7 +17,7 @@ DROP TABLE gradini CASCADE CONSTRAINTS;
 DROP INDEX utilizatori_index_email;
 /
 CREATE TABLE utilizatori(
-	username VARCHAR2(30),
+	username VARCHAR2(32),
 	passwd VARCHAR2(32),
 	nume VARCHAR2(50),
 	email VARCHAR2(40),
@@ -30,10 +30,11 @@ CREATE TABLE admin(
 );
 CREATE TABLE plante(
 	id_planta NUMBER(10) DEFAULT 0,
+	id_gradina NUMBER(10) DEFAULT 0,
 	categorie VARCHAR2(50),
 	beneficii VARCHAR2(50),
 	data_postarii DATE,
-	username VARCHAR2(30),
+	username VARCHAR2(32),
 	vizualizari NUMBER(10),
 	denumire VARCHAR2(50),
 	origine VARCHAR2(50),
@@ -44,9 +45,9 @@ CREATE TABLE plante(
 	maniera_inmul VARCHAR2(50)
 );
 CREATE TABLE gradini(
-	username VARCHAR2(30),
-	id_planta NUMBER(10) DEFAULT 0,
-	nume_gradi VARCHAR2(30),
+	id_gradina NUMBER(10) DEFAULT 0,
+	username VARCHAR2(32),
+	nume_gradi VARCHAR2(32),
 	spatiu_gradi NUMBER(10)
 );
 CREATE TABLE imagini(
@@ -56,7 +57,7 @@ CREATE TABLE imagini(
 /
 CREATE TABLE aprecieri(
 	id_planta NUMBER(10),
-	username VARCHAR2(30)
+	username VARCHAR2(32)
 );
 /
 CREATE TABLE mesaje(
