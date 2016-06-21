@@ -28,28 +28,28 @@
 			$id=$_GET['id'];
 			$id_gradina=$_SESSION['id_gradina'];
 			try{
-					$db=new Database();
-				}
-				catch(Exception $e){
-					die("Serverul a intalnit o eroare: ".$e->getMessage());
-				}
-				$sql="select CATEGORIE, BENEFICII, DENUMIRE, ORIGINE, REGIM_DEZV, DESCRIERE,SPATIU, PERIOADA_CULT, MANIERA_INMUL  from plante where id_planta='".$id."'";
-				try{
-					$rez1=$db->execFetchAll($sql);
-				}
-				catch(Exception $e){
-					die("Serverul a intalnit o eroare: ".$e->getMessage());
-				}
-				try{
-					$rez=$db->execFetchAll("SELECT SPATIU_GRADI FROM GRADINI where ID_GRADINA=:req",array(array(":req",($id_gradina),-1)));
-				}catch(Exception $e){
-					header("refresh:5;url=\\BoW/index.php");
-					die("Eroare server: ".$e->getMessage());
-				}
-				foreach ($rez as $r) {
-					$spatiu=$r['SPATIU_GRADI'];
-				}
-				foreach($rez1 as $r){
+				$db=new Database();
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			$sql="select CATEGORIE, BENEFICII, DENUMIRE, ORIGINE, REGIM_DEZV, DESCRIERE,SPATIU, PERIOADA_CULT, MANIERA_INMUL  from plante where id_planta='".$id."'";
+			try{
+				$rez1=$db->execFetchAll($sql);
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+			try{
+				$rez=$db->execFetchAll("SELECT SPATIU_GRADI FROM GRADINI where ID_GRADINA=:req",array(array(":req",($id_gradina),-1)));
+			}catch(Exception $e){
+				header("refresh:5;url=\\BoW/index.php");
+				die("Eroare server: ".$e->getMessage());
+			}
+			foreach ($rez as $r) {
+				$spatiu=$r['SPATIU_GRADI'];
+			}
+			foreach($rez1 as $r){
 				?>
 				<form action="apps/editplanta.php" method="post" enctype="multipart/form-data">
 				

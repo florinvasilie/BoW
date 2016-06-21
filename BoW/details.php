@@ -17,6 +17,7 @@
 	<?php
 		require_once("header.php");
 		require_once("apps/manage.php");
+		require_once("apps/database.php");
 
 		if (!ctype_digit($_GET['id'])){
 			header("refresh:2;url=\\BoW/rasfoieste.php?Page=1");
@@ -34,8 +35,14 @@
 		$manage=new managePlante();
 		$manage->details($id);
 		$manage->showImage($id);
-
-	/*	if (isset($_SESSION['username'])){
+		
+		try{
+			$db=new Database();
+			}
+			catch(Exception $e){
+				die("Serverul a intalnit o eroare: ".$e->getMessage());
+			}
+		if (isset($_SESSION['username'])){
 			try{
 				$sql="select passwd from utilizatori where username='".$_SESSION['username']."'";
 				$rez=$db->execFetchAll($sql);
@@ -82,10 +89,11 @@
 		}
 		foreach($rez as $r){
 			echo "<h2>Aceasta planta a fost votata de ".$r['NRVOTURI']." ori!</h2>";
-		}*/
+		}
 
 	?>
 
+	<div class="g-plusone" data-annotation="inline" data-width="300"></div>
 	<a href="https://twitter.com/share" class="twitter-share-button" data-size="large">Tweet</a>
 	<script>!
 	function(d,s,id){
@@ -98,7 +106,6 @@
 		}
 		(document, 'script', 'twitter-wjs');
 	</script>
-	<div class="g-plusone" data-annotation="inline" data-width="300"></div>
 	</div>
 	<?php
 	require_once("leftside.php");

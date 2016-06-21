@@ -31,6 +31,7 @@
 			foreach ($rez as $r) {
 				$spatiu=$r['SPATIU_GRADI'];
 			}
+			if ($spatiu==0) die("Nu mai este loc in gradina");
 		
 	?>
 		<div class="main-content new-petition">
@@ -74,7 +75,7 @@
 			</div>
 			<div class="form-group">
 				<label for="desc">Descriere</label>
-				<textarea name="descriere" id="desc" required></textarea>
+				<textarea name="descriere" id="desc"  required></textarea>
 			</div>
 			<button class="btn-primary pull-right" name="submit" type="submit">Posteaza
 			</button>

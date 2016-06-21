@@ -19,7 +19,7 @@
 		<form action="apps/inregmesaj.php" method="post">
 			<div class="form-group">
 				<label for="username">Nume</label>
-				<input name="nume" type="text" placeholder="Nume" id="username" required>
+				<input name="nume" type="text" placeholder="Nume" id="username" pattern="[a-zA-Z0-9-]{1,32}" title="Doar litere si cifre! Dimensiunea maxima:32!" required>
 			</div>
 			<div class="form-group">
 				<label for="email">Email</label>

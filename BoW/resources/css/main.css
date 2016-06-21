@@ -29,21 +29,55 @@ body { line-height: 1; }
 
 ol, ul { list-style: none; }
 
-blockquote, q { quotes: none; }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
 
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
 img {
-    border-radius: 30px;
-    height: 300px;
+ 
+    height: 500px;
 }
+.gallery {
+  width: 640px;
+  margin: 0 auto;
+  padding: 5px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+
+.gallery > div {
+  position: relative;
+  float: left;
+  padding: 5px;
+}
+
+.gallery > div > img {
+  display: block;
+  height: 200px;
+  transition: .1s transform;
+  transform: translateZ(0); /* hack */
+}
+
+.gallery > div:hover {
+  z-index: 1;
+}
+
+.gallery > div:hover > img {
+  transform: scale(1.7,1.7);
+  transition: .3s transform;
+}
+
+.cf:before, .cf:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+
+.cf:after {
+  clear: both;
+}
+
 
 /* =base styles */
 
@@ -65,7 +99,7 @@ body {
 .pull-right { float: right; }
 
 a {
-	color: #337AB7;
+	color: #0d47a1;
 	text-decoration: none;
 }
 a:hover{
@@ -89,7 +123,7 @@ p { margin-bottom: 15px; }
 }
 .btn-primary:hover {
 	color: #fff;
-	background: #286090;
+	background: #42a5f5;
 	border-color: #204d74;
 	text-decoration: none;
 }
@@ -122,10 +156,8 @@ textarea {
 
 .form-group { margin: 20px 0; }
 .form-group label {
-	display: inline-block;
-	margin-bottom: 5px;
-	font-size: 13px;
-	font-weight: 600;
+	padding: 3px 0;
+    color: #637283;
 }
 .form-group input, .form-group textarea {
 	width: 96%;
@@ -136,6 +168,7 @@ textarea {
 	height: 40px; 
 	margin-bottom: 0px !important;
 }
+
 
 /* =header */
 
@@ -163,6 +196,7 @@ header {
 .primary-navigation {
 	float: right;
 	margin-top: 17px;
+
 }
 
 .primary-navigation li {
@@ -176,6 +210,7 @@ header {
 aside, .main-content {
 	box-sizing: border-box;
 	margin-bottom: 25px;
+
 }
 
 aside {
@@ -187,13 +222,15 @@ aside {
 
 aside input[type="search"] { 
 	margin-bottom: 25px;
-	text-align: center; 
+	text-align: center;
 }
 
 aside h2 {
+
 	margin-bottom: 25px;
 	padding-bottom: 6px;
 	border-bottom: 1px solid #eee;
+	color: #798ca7;
 	font-weight: 600;
 }
 
@@ -247,26 +284,4 @@ table th {
 footer {
 	clear: both;
 	text-align: center;
-}
-
-
-/* =media queries */
-
-@media(max-width: 841px) {
-	header { text-align: center; }
-
-	.logo { float: none; }
-	.logo img { display: none; }
-	.logo h1 { margin: 0px; }
-
-	.primary-navigation { float: none; }
-
-	aside, .main-content {
-		width: 100%;
-		float: none;
-		margin-bottom: 50px;
-		padding: 0px;
-	}
-	aside { text-align: center; }
-
 }

@@ -52,8 +52,6 @@
 		foreach($rez as $r){
 			$nr_gradini=$r['TOTAL'];
 		}
-		if($nr_gradini==0)
-			echo "<p>Nu ai creat nicio gradina!</>";
 		// informatii despre spatiul total al gradinilor, ceva legat de spatiu?
 	?>
 		<aside>

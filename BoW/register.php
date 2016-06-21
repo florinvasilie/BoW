@@ -23,7 +23,7 @@
 				</div>
 				<div class="form-group">
 					<label for="username">Nume</label>
-					<input id="username" name="nume" type="text" placeholder="Nume" pattern="[a-zA-Z0-9-]{1,50}" title="Doar litere si cifre! Dimensiunea maxima:50!" required>
+					<input id="username" name="nume" type="text" placeholder="Nume" pattern="[a-zA-Z0-9\s]{1,50}" title="Doar litere si cifre! Dimensiunea maxima:50!" required>
 				</div>
 				<div class="form-group">
 					<label for="email">Email</label>

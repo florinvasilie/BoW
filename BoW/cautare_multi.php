@@ -17,126 +17,74 @@
 		require_once("apps/database.php");
 
 
+		$categorii = isset($_POST['categorie']) ? $_POST['categorie'] : array();
+		$beneficii = isset($_POST['beneficii']) ? $_POST['beneficii'] : array();
+		$origine = isset($_POST['origine']) ? $_POST['origine'] : array();
+		$regim = isset($_POST['regim']) ? $_POST['regim'] : array();
+		if(count($categorii)==0 && count($beneficii)==0 && count($origine==0) && count($regim==0)) die("".header("refresh:1;url=\\BoW/rasfoieste.php?Page=1"));
+		$sql="SELECT id_planta,denumire,username,data_postarii,categorie,beneficii FROM plante WHERE 1=1";
+		$index=0;
+		if (count($categorii)!=0) $sql.=" AND ";
+		foreach($categorii as $value) {
+			$index++;
+			if ($index>1) $sql.=" OR ";
+			$sql.="(categorie='".$value."')";
+		}
+		$index=0;
+		if (count($beneficii)!=0) $sql.=" AND ";
+		foreach($beneficii as $value) {
+			$index++;
+			if ($index>1) $sql.=" OR ";
+			$sql.="(beneficii='".$value."')";
+		}
+		if (count($origine)!=0) $sql.=" AND ";
+		$index=0;
+		foreach($origine as $value) {
+			$index++;
+			if ($index>1) $sql.=" OR ";
+			$sql.="(origine='".$value."')";
+		}
+		if (count($regim)!=0) $sql.=" AND ";
+		$index=0;
+		foreach($regim as $value) {
+			$index++;
+			if ($index>1) $sql.=" OR ";
+			$sql.="(regim_dezv='".$value."')";
+		}
+		//echo $sql;
+
+
 		try{
 			$db= new Database();
 		}catch(Exception $e){
 			die("Serverul a intalnit o eroare: ".$e->getMessage());
 		}
-		$okBeneficii=0;
-		$okCategorie=0;
-		if (htmlspecialchars($_REQUEST["estetica"]) || htmlspecialchars($_REQUEST["beneficii"]) || htmlspecialchars($_REQUEST["parfum"]) || htmlspecialchars($_REQUEST["medicinal"]) || htmlspecialchars($_REQUEST["fructifer"])){
-			$okBeneficii=1;
+		try{
+			$rez=$db->execFetchAll($sql);
 		}
-		if (htmlspecialchars($_REQUEST["conifere"]) || htmlspecialchars($_REQUEST["mediteraneene"]) || htmlspecialchars($_REQUEST["asiatice"]) || htmlspecialchars($_REQUEST["medicinal"]) || htmlspecialchars($_REQUEST["foioase"]) || htmlspecialchars($_REQUEST["stepa"])){
-			$okCategorie=1;
+		catch(Exception $e){
+			die("Serverul a intalnit o eroare: ".$e->getMessage());
 		}
-		if($okCategorie==1 && $okBeneficii==1){
-			try{
-				$rez=$db->execFetchAll("select id_planta,denumire,username,data_postarii,categorie,beneficii from plante where (upper(categorie) LIKE upper('".$_REQUEST['conifere']."') OR upper(categorie) LIKE upper('".$_REQUEST['mediteraneene']."') OR upper(categorie) LIKE upper('".$_REQUEST['asiatice']."') OR upper(categorie) LIKE upper('".$_REQUEST['foioase']."') OR upper(categorie) LIKE upper('".$_REQUEST['stepa']."')) AND (upper(beneficii) LIKE upper('".$_REQUEST['estetica']."') OR upper(beneficii) LIKE upper('".$_REQUEST['parfum']."') OR upper(beneficii) LIKE upper('".$_REQUEST['meicinal']."') OR upper(beneficii) LIKE upper('".$_REQUEST['fructifer']."'))");
-			}catch(Exception $e){
-				die("Serverul a intalnit o eroare: ".$e->getMessage());
-			}
-			echo "<div class=\"main-content\">";
-			if ($rez!=null){
-
-				echo "<table>
-					<tr>
-					<th>Denumire</th>
-					<th>Utilizator</th>
-					<th>Categorie</th>
-					<th>Beneficii</th>
-					<th>Data postarii</th>
-					</tr>";
-				foreach ($rez as $r) {
-					echo "<tr>";
-					echo "<td><a href=\"details.php?id=".$r['ID_PLANTA']."\">" . $r['DENUMIRE']."</a></td>";
-				    echo "<td>" . $r['USERNAME'] . "</td>";
-				    echo "<td>" . $r['CATEGORIE'] . "</td>";
-				    echo "<td>" . $r['BENEFICII'] . "</td>";
-				    echo "<td>" . $r['DATA_POSTARII'] . "</td>";
-				    echo "</tr>";
-				}
-				echo "</table>";
-				echo "</div>";
-				
-			}
-			else{
-				echo "<p>Nu a fost gasit nici un rezultat</p>";
-				echo "</div>";
-				require_once("leftside.php");
-				require_once("footer.php");
-			}	
+		echo "<div class=\"main-content\">";
+		if ($rez!=null){
+		echo "<table>
+			<tr>
+			<th>Denumire</th>
+			<th>Utilizator</th>
+			<th>Categorie</th>
+			<th>Data postarii</th>
+			</tr>";
+		foreach ($rez as $r) {
+			echo "<tr>";
+			echo "<td><a href=\"details.php?id=".$r['ID_PLANTA']."\">" . $r['DENUMIRE']."</a></td>";
+		    echo "<td>" . $r['USERNAME'] . "</td>";
+		    echo "<td>" . $r['BENEFICII'] . "</td>";
+		    echo "<td>" . $r['DATA_POSTARII'] . "</td>";
+		    echo "</tr>";
 		}
-		if($okCategorie==1 && $okBeneficii==0){
-			try{
-				$rez=$db->execFetchAll("select id_planta,denumire,username,data_postarii,categorie from plante where upper(categorie) LIKE upper('".$_REQUEST['conifere']."') OR upper(categorie) LIKE upper('".$_REQUEST['mediteraneene']."') OR upper(categorie) LIKE upper('".$_REQUEST['asiatice']."') OR upper(categorie) LIKE upper('".$_REQUEST['foioase']."') OR upper(categorie) LIKE upper('".$_REQUEST['stepa']."')");
-			}catch(Exception $e){
-				die("Serverul a intalnit o eroare: ".$e->getMessage());
+		echo "</table>";
+		echo "</div>";
 			}
-			echo "<div class=\"main-content\">";
-			if ($rez!=null){
-
-				echo "<table>
-					<tr>
-					<th>Denumire</th>
-					<th>Utilizator</th>
-					<th>Categorie</th>
-					<th>Data postarii</th>
-					</tr>";
-				foreach ($rez as $r) {
-					echo "<tr>";
-					echo "<td><a href=\"details.php?id=".$r['ID_PLANTA']."\">" . $r['DENUMIRE']."</a></td>";
-				    echo "<td>" . $r['USERNAME'] . "</td>";
-				    echo "<td>" . $r['CATEGORIE'] . "</td>";
-				    echo "<td>" . $r['DATA_POSTARII'] . "</td>";
-				    echo "</tr>";
-				}
-				echo "</table>";
-				echo "</div>";
-				
-			}
-			else{
-				echo "<p>Nu a fost gasit nici un rezultat</p>";
-				echo "</div>";
-				require_once("leftside.php");
-				require_once("footer.php");
-			}	
-		}
-		if($okCategorie==0 && $okBeneficii==1){
-			try{
-				$rez=$db->execFetchAll("select id_planta,denumire,username,data_postarii,beneficii from plante where upper(beneficii) LIKE upper('".$_REQUEST['estetica']."') OR upper(beneficii) LIKE upper('".$_REQUEST['parfum']."') OR upper(beneficii) LIKE upper('".$_REQUEST['meicinal']."') OR upper(beneficii) LIKE upper('".$_REQUEST['fructifer']."')");
-			}catch(Exception $e){
-				die("Serverul a intalnit o eroare: ".$e->getMessage());
-			}
-			echo "<div class=\"main-content\">";
-			if ($rez!=null){
-
-				echo "<table>
-					<tr>
-					<th>Denumire</th>
-					<th>Utilizator</th>
-					<th>Categorie</th>
-					<th>Data postarii</th>
-					</tr>";
-				foreach ($rez as $r) {
-					echo "<tr>";
-					echo "<td><a href=\"details.php?id=".$r['ID_PLANTA']."\">" . $r['DENUMIRE']."</a></td>";
-				    echo "<td>" . $r['USERNAME'] . "</td>";
-				    echo "<td>" . $r['BENEFICII'] . "</td>";
-				    echo "<td>" . $r['DATA_POSTARII'] . "</td>";
-				    echo "</tr>";
-				}
-				echo "</table>";
-				echo "</div>";
-				
-			}
-			else{
-				echo "<p>Nu a fost gasit nici un rezultat</p>";
-				echo "</div>";
-				require_once("leftside.php");
-				require_once("footer.php");
-			}	
-		}
 
 		require_once("leftside.php");
 		require_once("footer.php");

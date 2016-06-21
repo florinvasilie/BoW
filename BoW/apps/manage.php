@@ -258,6 +258,13 @@
 				$sql="UPDATE PLANTE SET VIZUALIZARI=".$r['VIZUALIZARI']."+1 WHERE ID_PLANTA=:var";
 				$rez=$db->execute($sql,array(array(":var",$id,-1)));
 			}
+			$sql1="SELECT id_gradina FROM PLANTE WHERE ID_PLANTA=:var";
+			$rez1=$db->execFetchAll($sql1,array(array(":var",$id,-1)));
+			foreach($rez1 as $r){
+				$id_gradina=$r["ID_GRADINA"];
+			}
+
+			echo "<a class=\"btn-primary\" href=\"detailsgradi.php?id=".$id_gradina."\">Plante similare</a><br><br>";
 			}catch(Exception $e){
 				echo $e->getMessage();
 			}
@@ -267,12 +274,16 @@
 			$sql = "SELECT imagine FROM imagini WHERE ID_PLANT='".$id."'";
 			$stid = oci_parse($connection, $sql);
 			oci_execute($stid);
-
+			echo "<div class=\"gallery cf\">";
 			while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {
+				echo "<div>";
 				$img = $row['IMAGINE']->load();
 				echo ('<img src="data:img/;base64,'.base64_encode($img).'" />');
+				echo "</div>";
 			}
+			echo "</div>";
 			echo "<br>";
+			
 		}
 		public function deletePlanta($id){
 			try{
